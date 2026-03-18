@@ -1,0 +1,20 @@
+{
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_WEATHER_API_KEY": "7523b4a3d9d3ebf05fae9a5aa4cdaedd"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_WEATHER_API_KEY": "7523b4a3d9d3ebf05fae9a5aa4cdaedd"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

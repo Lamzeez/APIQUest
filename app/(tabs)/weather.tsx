@@ -44,7 +44,9 @@ export default function WeatherScreen() {
       );
       if (!currentRes.ok) throw new Error('Failed to fetch current weather');
       const currentData = await currentRes.json();
-      setCurrentWeather(currentData);
+      if (currentData && currentData.main) {
+        setCurrentWeather(currentData);
+      }
 
       // Fetch 5-Day Forecast
       const forecastRes = await fetch(
@@ -53,8 +55,10 @@ export default function WeatherScreen() {
       if (!forecastRes.ok) throw new Error('Failed to fetch forecast');
       const forecastData = await forecastRes.json();
       
-      const dailyForecasts = forecastData.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
-      setForecast(dailyForecasts);
+      if (forecastData && forecastData.list) {
+        const dailyForecasts = forecastData.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
+        setForecast(dailyForecasts);
+      }
       
       setError(null);
     } catch (err: any) {
@@ -128,16 +132,16 @@ export default function WeatherScreen() {
             </TouchableOpacity>
           </View>
 
-          {currentWeather && (
+          {currentWeather && currentWeather.main ? (
             <View style={styles.mainCard}>
               <View style={styles.currentWeatherRow}>
                 <View>
                   <Text style={styles.currentTemp}>{Math.round(currentWeather.main.temp)}°</Text>
-                  <Text style={styles.currentCondition}>{currentWeather.weather[0].description}</Text>
+                  <Text style={styles.currentCondition}>{currentWeather.weather?.[0]?.description || 'N/A'}</Text>
                   <Text style={styles.feelsLike}>Feels like {Math.round(currentWeather.main.feels_like)}°</Text>
                 </View>
                 <View style={styles.mainIconContainer}>
-                  <Ionicons name={getWeatherIcon(currentWeather.weather[0].description) as any} size={100} color="#fff" />
+                  <Ionicons name={getWeatherIcon(currentWeather.weather?.[0]?.description || '') as any} size={100} color="#fff" />
                 </View>
               </View>
 
@@ -153,20 +157,23 @@ export default function WeatherScreen() {
                   <View style={styles.statIconBackground}>
                     <Ionicons name="speedometer-outline" size={20} color="#FFD700" />
                   </View>
-                  <Text style={styles.statValue}>{currentWeather.wind.speed}m/s</Text>
+                  <Text style={styles.statValue}>{currentWeather.wind?.speed || 0}m/s</Text>
                   <Text style={styles.statLabel}>Wind</Text>
                 </View>
                 <View style={styles.statItem}>
                   <View style={styles.statIconBackground}>
                     <Ionicons name="eye-outline" size={20} color="#fff" />
                   </View>
-                  <Text style={styles.statValue}>{(currentWeather.visibility / 1000).toFixed(1)}km</Text>
+                  <Text style={styles.statValue}>{((currentWeather.visibility || 0) / 1000).toFixed(1)}km</Text>
                   <Text style={styles.statLabel}>Visibility</Text>
                 </View>
               </View>
             </View>
+          ) : !loading && !error && (
+            <View style={{padding: 20, alignItems: 'center'}}>
+              <Text style={{color: '#64748B'}}>Current weather data unavailable</Text>
+            </View>
           )}
-
           <View style={styles.forecastSection}>
             <Text style={styles.sectionTitle}>5-Day Forecast</Text>
             <View style={styles.forecastList}>

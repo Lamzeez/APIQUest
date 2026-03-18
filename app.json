@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "api-quest",
-    "slug": "api-quest",
+    "slug": "lamostedave3",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,7 +19,17 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.lamostedave244.apiquest",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC-QDnqkCELSrryTsVdjxReqbo6mIHFmdY"
+        }
+      }
     },
     "web": {
       "output": "static",
@@ -49,6 +59,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "1de6a01a-5994-4916-8959-ec6bc23e0603"
+      }
+    },
+    "owner": "lamostedave3"
   }
 }
